@@ -33,14 +33,14 @@ public class DataBaseWorker {
             resultSet = statement.executeQuery(sql);
 
             while (resultSet.next()) {
-                if (user == null) {
-                    user = new User(
-                            resultSet.getString("login"),
-                            resultSet.getString("password"),
-                            resultSet.getDate("date"),
-                            resultSet.getString("email")
-                    );
-                }
+                
+                user = new User(
+                        resultSet.getString("login"),
+                        resultSet.getString("password"),
+                        resultSet.getDate("date"),
+                        resultSet.getString("email")
+                );
+
             }
 
         } catch (SQLException e) {
@@ -78,11 +78,10 @@ public class DataBaseWorker {
                 userStatement.setDate(3, new java.sql.Date(user.getDate().getTime()));
                 affectedRows = userStatement.executeUpdate();
 
-                if (user.getEmail() != null && !user.getEmail().isEmpty()) {
-                    emailStatement.setString(1, user.getLogin());
-                    emailStatement.setString(2, user.getEmail());
-                    affectedRows += emailStatement.executeUpdate();
-                }
+                emailStatement.setString(1, user.getLogin());
+                emailStatement.setString(2, user.getEmail());
+                affectedRows += emailStatement.executeUpdate();
+
 
                 connection.commit();
             } catch (SQLException e) {
